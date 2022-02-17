@@ -1,10 +1,19 @@
-// const log = (message) => {
-//     console.log("log > ", message);
-// }
+import { toast } from 'react-toastify';
 
-function log(message) {
-    console.log(message);
+const toaster = (message = "", type = "") => {
+    switch (type) {
+        case "error":
+            toast.error(message);
+            break;
+        case "info":
+            toast.info(message); break;
+        case "warning":
+            toast.warn(message); break;
+
+        case "success":
+            toast.success(message); break;
+        default: toast(message);
+    }
 }
 
-
-export default log;
+export { toaster };

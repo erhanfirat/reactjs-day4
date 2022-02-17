@@ -14,7 +14,7 @@ import {
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { doRequest } from './api/api';
-import { getTasks, postTask } from './api/endpoints';
+import { getTasks, postTask, buggyTask } from './api/endpoints';
 import { getTasksBasic, postTaskBasic, putTaskBasic, deleteTaskBasic } from './api/basic';
 
 const StudentList = React.lazy(() => import('./components/function/StudentList/StudentList'));
@@ -28,16 +28,25 @@ class App extends React.Component {
 
   componentDidMount() {
 
-    doRequest(getTasks).then(res => {
-      console.log("tasks > ", res);
-    })
+    // doRequest(getTasks)
+    //   .then(res => {
+    //     console.log("tasks > ", res);
+    //   })
 
-    const newTask = {
-      createdAt: new Date(),
-      description: "yeni bir task oluştur.",
-      priority: true
-    }
-    doRequest(postTask(newTask));
+    // doRequest(buggyTask(123))
+    //   .then(res => {
+    //     console.log("buggy task res > ", res);
+    //   })
+    //   .catch(err => {
+    //     console.error("******* buggy task err ****** ", err);
+    //   })
+
+    // const newTask = {
+    //   createdAt: new Date(),
+    //   description: "yeni bir task oluştur.",
+    //   priority: true
+    // }
+    // doRequest(postTask(newTask));
 
 
     // getTasksBasic();
