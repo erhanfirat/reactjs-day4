@@ -1,10 +1,17 @@
 import React, { useReducer, useEffect, useState } from "react";
-import { studentReducer, addNewStudentAction, bulkInsertStudentsAction } from "./StudentsReducer";
 import StudentForm from "./StudentForm";
 import { Button, Card } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreator } from '../../../state';
 
 const StudentList = () => {
-    const [studentsState, dispatch] = useReducer(studentReducer, { students: [], count: 0 });
+    const { students } = useSelector(state => state.students);
+    const dispatch = useDispatch();
+    const { addNewStudentAction,
+        bulkInsertStudentsAction,
+        deleteStudentAction } = bindActionCreators(actionCreator, dispatch);
+
     const [loading, setLoading] = useState(false);
     const [toggleStudentForm, setToggleStudentForm] = useState(false);
 
@@ -21,14 +28,14 @@ const StudentList = () => {
                 { no: "7", name: "Mustafa" },
                 { no: "3", name: "Mehmet" }
             ];
-            dispatch(bulkInsertStudentsAction(newStudents));
+            bulkInsertStudentsAction(newStudents);
             setLoading(false);
         }, 1000);
     }
 
 
     const saveStudentHandler = ({ name, no }) => {
-        dispatch(addNewStudentAction({ name, no }));
+        addNewStudentAction({ name, no });
     }
 
     const closeFormHandler = () => {
@@ -42,9 +49,9 @@ const StudentList = () => {
                     <Card.Body>
                         {loading && <p>Loading...</p>}
                         {!loading && <div>
-                            <p>Students Count: {studentsState.count}</p>
+                            <p>Students Count: {students?.length}</p>
                             <ul>
-                                {studentsState.students.map(student => <li key={student.no}>
+                                {students?.map(student => <li key={student.no}>
                                     {student.no} - {student.name}
                                 </li>)}
                             </ul>

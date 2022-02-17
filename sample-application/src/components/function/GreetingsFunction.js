@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { Container, Nav, Navbar } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const greetingsStyle = {
@@ -21,6 +22,8 @@ const GreetingsFunction = (props) => {
     useEffect(() => {
         inputRef.current.focus();
     });
+
+    const students = useSelector(state => state.students);
 
     return <div style={greetingsStyle}>
         <div className='row'>
