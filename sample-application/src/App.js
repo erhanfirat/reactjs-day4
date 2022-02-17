@@ -12,6 +12,10 @@ import {
   Route
 } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import { doRequest } from './api/api';
+import { getTasks, postTask } from './api/endpoints';
+import { getTasksBasic, postTaskBasic, putTaskBasic, deleteTaskBasic } from './api/basic';
 
 const StudentList = React.lazy(() => import('./components/function/StudentList/StudentList'));
 const CounterFunction = React.lazy(() => import('./components/function/CounterFunction'));
@@ -19,54 +23,51 @@ const CounterFunction = React.lazy(() => import('./components/function/CounterFu
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      showCounter: true,
-      componentType: true,
-      myComponents: {
-        Greetings: GreetingsFunction,
-        Counter: CounterFunction,
-        StudentList: StudentList
-      }
-    };
+    this.state = {};
   }
-  toggleCounter() {
-    this.setState({ showCounter: !this.state.showCounter });
-  }
-  toggleComponentType() {
-    if (this.state.componentType) {
-      this.setState({
-        ...this.state, componentType: false, myComponents: {
-          ...this.state.myComponents,
-          Greetings: GreetingsClass,
-          Counter: CounterClass,
-        }
-      })
+
+  componentDidMount() {
+
+    doRequest(getTasks).then(res => {
+      console.log("tasks > ", res);
+    })
+
+    const newTask = {
+      createdAt: new Date(),
+      description: "yeni bir task oluştur.",
+      priority: true
     }
-    else {
-      this.setState({
-        ...this.state, componentType: true, myComponents: {
-          ...this.state.myComponents,
-          Greetings: GreetingsFunction,
-          Counter: CounterFunction,
-        }
-      })
-    }
-    this.setState({ showCounter: !this.state.showCounter });
+    doRequest(postTask(newTask));
+
+
+    // getTasksBasic();
+
+    // const newTask = {
+    //   createdAt: new Date(),
+    //   description: "yeni bir task oluştur.",
+    //   priority: true
+    // }
+    // postTaskBasic(newTask);
+
+    // putTaskBasic({
+    //   createdAt: new Date(),
+    //   description: "Taskı güncelle.",
+    //   priority: true,
+    //   id: "1"
+    // })
+
+    // deleteTaskBasic(2);
   }
-  toggleCounter() {
-    this.setState({ showCounter: !this.state.showCounter });
-  }
+
   render() {
-    const { showCounter } = this.state;
     const CounterProps = {
       time: 100
     };
-    const { myComponents } = this.state;
 
     return (
       <Router>
         <div className="App">
-          <myComponents.Greetings></myComponents.Greetings>
+          <GreetingsFunction></GreetingsFunction>
           <hr />
           <Suspense fallback={<h1>Loading...</h1>}>
             <Routes>
